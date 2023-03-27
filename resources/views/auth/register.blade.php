@@ -3,6 +3,7 @@
         @csrf
 
         <x-picture-input/>
+        
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />

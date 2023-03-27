@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')
-            ->constrained('category')
+            ->constrained('categories')
             ->onDelete('cascade')
             ->onUpdate('cascade');
             $table->string('author');
-            $table->string('name');
-            $table->integer('rating');
-            $table->string('cover');
+            $table->string('title');
+            $table->float('rating')->default(0.0);
+            $table->string('cover')->nullable();
             $table->string('url');
-            $table->boolean('visible')->default(false);
-            $table->text('description')->default("This book has no description");
+            $table->boolean('archived')->default(false);
+            $table->mediumText('description')->default("This book has no description");
             $table->timestamps();
         });    
     }
