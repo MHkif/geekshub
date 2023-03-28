@@ -25,22 +25,9 @@ use App\Http\Controllers\CategoryController;
 |
 */
 
-// Books
-Route::get('/', [BookContoller::class, "index"])->name('home');
-Route::get('/book/{book}', [BookContoller::class, 'show'])->name('book');
-Route::post('/book', [BookContoller::class, 'store']);
-Route::post('/book/{book}/like', [BookContoller::class, 'liked']);
-Route::post('/book/{book}/favorite', [BookContoller::class, 'isFavorite']);
 
 
 
-
-// Groups
-Route::get('/groups/', [Groups::class, 'index'])->name('groups');
-// Route::get('/groups/myGroups/' , [Groups::class, 'index'])->name('groups.myGroups');
-Route::get('/groups/{group}', [Groups::class, 'show'])->name('show.group');
-Route::get('/groups/create', [Groups::class, 'create'])->name('create.group');
-Route::get('/groups/{group}/edit', [Groups::class, 'edit'])->name('edit.group');
 
 
 
@@ -53,14 +40,31 @@ Route::get('/user/favorites/', [Groups::class, 'index'])->name('favorites');
 
 Route::get('/dashboard', function () {
     return view('admin/dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'admin'])->name('dashboard');
 
 
 Route::middleware('auth')->group(function () {
+
+    // Books
+    Route::get('/', [BookContoller::class, "index"])->name('home');
+    Route::get('/book/{book}', [BookContoller::class, 'show'])->name('book');
+    Route::post('/book', [BookContoller::class, 'store']);
+    Route::post('/book/{book}/like', [BookContoller::class, 'liked']);
+    Route::post('/book/{book}/favorite', [BookContoller::class, 'isFavorite']);
+
+
+    // Groups
+    Route::get('/groups/', [Groups::class, 'index'])->name('groups');
+    Route::get('/groups/{group}', [Groups::class, 'show'])->name('show.group');
+    Route::get('/groups/create', [Groups::class, 'create'])->name('create.group');
+    Route::get('/groups/{group}/edit', [Groups::class, 'edit'])->name('edit.group');
+
+    // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profile/favorites', [UserController::class, 'favorites'])->name('profile.favorites');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     // Group
     Route::get('/profile/myGroups', [Groups::class, 'myGroups'])->name('profile.myGroups');
     Route::post('/groups/myGroups/create', [Groups::class, 'store']);
@@ -70,6 +74,23 @@ Route::middleware('auth')->group(function () {
 
     // Comments
     Route::post('/group/{group}/comment/create', [CommentController::class, 'store']);
+});
+
+Route::middleware('admin')->group(function () {
+
+    // Admin Dashboard
+    Route::get('/admin/books', function () {
+        return view('admin/books/index', [
+            'books' => Book::latest()->get(),
+            'categories' => Category::all()
+        ]);
+    })->name('adminBooks');
+
+    Route::get('/admin/books/create', function () {
+        return view('admin/books/create', [
+            'categories' => Category::all()
+        ]);
+    })->name('books.create');
 
 
     // Category
@@ -79,55 +100,36 @@ Route::middleware('auth')->group(function () {
     Route::put('/category/{category}/update', [CategoryController::class, 'update']);
     Route::get('/category/{category}/delete', [CategoryController::class, 'destroy']);
 
+    Route::get('/admin/books/{book}/edit', function (Book $book) {
+        return view('admin/books/edit', [
+            'book' => $book,
+            'categories' => Category::all()
+        ]);
+    })->name('books.edit');
+
+
+    Route::put('/admin/books/{book}/update', [BookContoller::class, 'update']);
+    Route::get('/admin/books/{book}/delete', [BookContoller::class, 'destroy']);
+
+
+    Route::get('/admin/categories', function () {
+        return view('admin/categories/index', [
+            'categories' => Category::all()
+        ]);
+    })->name('adminCategories');
+
+    Route::get('/admin/groups', function () {
+        return view('admin/groups', [
+            'groups' => Group::all()
+        ]);
+    })->name('adminGroups');
+
+    Route::get('/admin/users', function () {
+        return view('admin/users', [
+            'users' => User::all()
+        ]);
+    })->name('adminUsers');
 });
-
-// Admin Dashboard
-Route::get('/admin/books', function () {
-    return view('admin/books/index', [
-        'books' => Book::latest()->get(),
-        'categories' => Category::all()
-    ]);
-})->name('adminBooks');
-
-Route::get('/admin/books/create', function () {
-    return view('admin/books/create', [
-        'categories' => Category::all()
-    ]);
-})->name('books.create');
-
-Route::get('/admin/books/{book}/edit', function (Book $book) {
-    return view('admin/books/edit', [
-        'book' => $book,
-        'categories' => Category::all()
-    ]);
-})->name('books.edit');
-
-
-Route::put('/admin/books/{book}/update', [BookContoller::class, 'update']);
-Route::get('/admin/books/{book}/delete', [BookContoller::class, 'destroy']);
-
-
-
-
-Route::get('/admin/categories', function () {
-    return view('admin/categories/index', [
-        'categories' => Category::all()
-    ]);
-})->name('adminCategories');
-
-Route::get('/admin/groups', function () {
-    return view('admin/groups', [
-        'groups' => Group::all()
-    ]);
-})->name('adminGroups');
-
-Route::get('/admin/users', function () {
-    return view('admin/users', [
-        'users' => User::all()
-    ]);
-
-    Route::post([BookContoller::class, 'updateLikes']);
-})->name('adminUsers');
 
 
 require __DIR__ . '/auth.php';

@@ -29,7 +29,6 @@ class Book extends Model
 
     public function scopeFilter($query, array $filter)
     {
-
         if ($filter['book'] ?? false) {
             $query->where('title', 'like', '%' . request('book') . '%')
                 ->orWhere('description', 'like', '%' . request('book') . '%');

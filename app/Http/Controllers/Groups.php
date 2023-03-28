@@ -22,7 +22,7 @@ class Groups extends Controller
         //  dd( $group);
         return view('groups/index', [
             'books' => Book::all(),
-            'groups' => Group::all()
+            'groups' => Group::latest()->filter(request(['group']))->paginate(6)
         ]);
     }
 
@@ -60,7 +60,7 @@ class Groups extends Controller
         // dd($data);
         if ($group = Group::create($data)) {
             if (Group::find($group->id)->users()->attach(Auth::user()->id) == null)
-                return back()->with('success', 'Group has been created Successfully !');
+                return redirect("groups/$group->id")->with('success', 'Group has been created Successfully !');
             else
                 return back()->with('memberNotAdded', 'The Member did not join the group !');
         } else {
@@ -120,6 +120,6 @@ class Groups extends Controller
     {
         // dd($group);
         $group->delete();
-        return back()->with('success', 'Group has been deleted successfully!');
+        return redirect('groups')->with('success', 'Group has been deleted successfully!');
     }
 }

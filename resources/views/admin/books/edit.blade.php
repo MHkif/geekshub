@@ -74,15 +74,24 @@
                
                 <div class="mt-4 flex space-x-2">
                     <div class="flex items-center space-x-3 cursor-pointer" >
+                        
                         {{-- <div class="relative w-10 h-5 transition duration-200 ease-linear rounded-full"
                             :class="[show ? 'bg-blue-600' : 'bg-gray-300']"> --}}
                             {{-- <label for="show"
                                 @click="show =!show"
                                 class="absolute left-0 w-5 h-5 mb-2 transition duration-100 ease-linear transform bg-white border-2 rounded-full cursor-pointer"
                                 :class="[show ? 'translate-x-full border-blue-500' : 'translate-x-0 border-gray-300']"></label> --}}
-                                <input type="radio"  name="archived" class=""/>
+                         @if ($book->archived == 1)
+                             
+                         <input type="radio" value="0"  name="archived" class=""/>
+                         @else
+                         <input type="radio" value="1"  name="archived" class=""/>
+
+                         @endif
+                               
+
                             {{-- </div> --}}
-                        <p class="text-gray-500">Archived</p>
+                        <p class="text-gray-500">Archived </p>
                     </div>
                 </div>
                 

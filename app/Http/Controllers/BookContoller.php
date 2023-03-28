@@ -19,7 +19,7 @@ class BookContoller extends Controller
     {
 
         return view('home', [
-            'books' => Book::latest()->filter(request(['book']))->paginate(6)
+            'books' => Book::where("archived" ,0)->latest()->filter(request(['book']))->paginate(6)
         ]);
     }
 
@@ -49,9 +49,10 @@ class BookContoller extends Controller
         return redirect('/admin/books/')->with('success', 'Book has been created Successfully !'); //admin/books
     }
 
+
     public function update(Request $request, Book $book)
     {
-        // dd($request->all());
+        // dd($request->archived);
         $data = $request->validate([
             'title' => 'required',
             'author' => 'required',
@@ -62,6 +63,9 @@ class BookContoller extends Controller
 
         if ($request->hasFile('cover')) {
             $data['cover'] = $request->file('cover')->store('booksCover', 'public');
+        }
+        if($request->archived == 'on'){
+            $data['archived'] = 1;
         }
 
         $book->update($data);

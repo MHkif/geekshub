@@ -19,6 +19,13 @@ class Group extends Model
         'members'
     ];
 
+    public function scopeFilter($query, array $filter)
+    {
+
+        if ($filter['group'] ?? false) {
+            $query->where('name', 'like', '%' . request('group') . '%');
+        }
+    }
 
     public function user(): BelongsTo
     {
@@ -31,17 +38,15 @@ class Group extends Model
         return $this->belongsToMany(User::class, 'members', 'group_id', 'user_id');
     }
 
-    public function comments(){
+    public function comments()
+    {
         return $this->hasMany(Comment::class);
     }
 
-    public function isMember() :Attribute
+    public function isMember(): Attribute
     {
         return new Attribute(function () {
             return $this->users()->where('user_id', auth()->user()->id)->exists();
         });
-    
     }
-
-   
 }

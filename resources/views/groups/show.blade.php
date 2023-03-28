@@ -2,7 +2,7 @@
     
 
     @include('components.flash-message')
-<div class="h-screen flex flex-col container mx-auto shadow-lg rounded-md">
+<div class="h-screen flex flex-col   shadow-lg rounded-md">
     <!-- headaer -->
 <div class="px-5 py-5 flex justify-between items-center bg-white border-b-2">
    <a href="/groups" class="flex items-center  gap-4 px-3 py-2 bg-gray-100 border border-gray-200 rounded-md shadow-md">
@@ -12,21 +12,26 @@
 
    </a>
   @if(Auth::user()->id == $group->user_id)
-  <button class="px-4 py-2 text-sm text-red-500 font-semibold rounded-md border border-red-500 hover:text-white hover:bg-red-500 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-     Delete The Group
-  </button>
+
+  <form method="POST" action="/group/{{$group->id}}/delete" >
+    @csrf
+    @method('delete')
+    <button class="px-4 py-2 text-sm text-red-500 font-semibold rounded-md border border-red-500 hover:text-white hover:bg-red-500 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+      Delete The Group
+    </button>
+  </form>
   @endif
 </div>
 <!-- end header -->
 
-<!-- Chatting -->
-<div class="flex flex-row h-full justify-between bg-white">
+
+<div class="flex flex-col w-full h-full justify-between bg-white md:flex-row">
 
   <!-- chat list -->
-  <div class="flex h-full flex-col w-2/5 border-r-2 overflow-y-auto">
+  <div class="hidden flex h-full flex-col w-2/5 border-r-2 overflow-y-auto md:flex">
     <!-- search compt -->
     <div class="flex flex-col gap-2 border-b-2 py-3 px-2">
-        <div class="text-md font-semibold text-gray-600">Memebers ({{$group->members}})</div>
+        <div class="text-sm font-semibold text-gray-600 lg:text-lg">Memebers ({{$group->members}})</div>
       <input
         type="text"
         placeholder="Search Member"
@@ -37,15 +42,15 @@
     <!-- user list -->
     @foreach ($members as $member)
     <div class="flex flex-row p-2 gap-4 justify-center items-center border-b-2">
-        <div class="w-1/4">
+        {{-- <div class="w-1/4"> --}}
         <img
             src="{{$member->avatar ?  asset("avatar/$member->avatar") : asset("avatar/profile.png")}}"
-            class="object-contain h-12 w-12 rounded-full border border-gray-400"
+            class="object-contain h-8 w-8  rounded-full border border-gray-400 md:h-10 md:w-10"
             alt=""
         />
-        </div>
+        {{-- </div> --}}
         <div class="w-full">
-        <div class=" font-semibold text-sm md:text-md">{{$member->name}}</div>
+        <div class=" font-semibold text-sm lg:text-md">{{$member->name}}</div>
         </div>
     </div>
     @endforeach
@@ -56,9 +61,9 @@
 
 
   <!-- message -->
-    <div class="relative w-full flex flex-col min-h-full justify-between">
+    <div class="relative max-h-full flex flex-col md:max-h-screen justify-between  md:w-full">
       {{-- Messages --}}
-      <div class="flex flex-col mt-5 mb-16  px-3 text-sm md:text-md max-h-full overflow-y-scroll ">
+      <div class="flex flex-col mt-5 mb-16 h-full px-3 text-sm md:text-md max-h-full overflow-y-scroll ">
         @foreach($group->comments as $comment)
         @php
         $avatar = $comment->user->avatar;
@@ -110,8 +115,9 @@
           </button>
         </form>
     </div>
+
   <!-- end message -->
-  <div class="w-2/5 border-l-2 px-5">
+  <div class=" w-full  border-l-2 px-5  md:w-2/5 md:flex">
     <div class="flex flex-col">
       <div class="py-4">
         <h3 class="font-semibold text-xl">{{$group->name}}</h3>
@@ -123,7 +129,7 @@
         class="object-fit rounded-xl h-68"
         alt=""
       />
-      <div class="font-semibold py-4">Created 22 Sep 2021</div>
+      <div class="font-semibold py-4">Created 22 Mars 2023</div>
       {{-- <div class="font-light">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt,
         perspiciatis!

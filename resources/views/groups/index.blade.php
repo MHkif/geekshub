@@ -2,7 +2,7 @@
 <x-app-layout>
  
     @include('components.flash-message')
-      <div x-data="{modelOpen: false }" class="flex justify-between items-center p-6">
+      <div x-data="{modelOpen: false }"  class="flex justify-between items-center p-6">
         <h1 class="font-black text-gray-600 md:text-xl text-md">Groups</h1>
           <button @click="modelOpen=!modelOpen" class="rounded py-2.5 px-3 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             <i class="fa-solid fa-plus mr-2"></i>Create Group

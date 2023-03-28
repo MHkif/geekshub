@@ -14,6 +14,57 @@
         <!-- Scripts -->
         <script src="https://kit.fontawesome.com/58c375ca00.js" crossorigin="anonymous"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>
+            .rating label:last-child {
+  position: static;
+}
+
+.rating label:nth-child(1) {
+  z-index: 5;
+}
+
+.rating label:nth-child(2) {
+  z-index: 4;
+}
+
+.rating label:nth-child(3) {
+  z-index: 3;
+}
+
+.rating label:nth-child(4) {
+  z-index: 2;
+}
+
+.rating label:nth-child(5) {
+  z-index: 1;
+}
+
+.rating label input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+.rating label .icon {
+  float: left;
+  color: transparent;
+}
+
+.rating label:last-child .icon {
+  color: #000;
+}
+
+.rating:not(:hover) label input:checked ~ .icon,
+.rating:hover label:hover input ~ .icon {
+  color: yellow;
+}
+
+.rating label input:focus:not(:checked) ~ .icon:last-child {
+  color: #000;
+  text-shadow: 0 0 5px yellow;
+}
+        </style>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-white dark:bg-gray-900">
@@ -33,5 +84,10 @@
                 {{ $slot }}
             </main>
         </div>
+        <script>
+            $(':radio').change(function() {
+  console.log('New star rating: ' + this.value);
+});
+        </script>
     </body>
 </html>
