@@ -24,9 +24,36 @@
 </div>
 <!-- end header -->
 
+<div class="flex items-center border-b-2 justify-start px-3 md:hidden">
+    <div class="flex items-center gap-2 w-52">
+      <button type="submit" class="rounded p-2   text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        {{-- <i class="fa-solid fa-magnifying-glass"></i> --}}
+        <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+    </button>
+      <h3 class="text-sm font-semibold text-gray-600 ">Memebers ({{$group->members}})</h3>
+     
+    </div>
+    
+  <div class="flex gap-2 w-full overflow-x-auto">
+    @foreach ($members as $member)
+   <div class="flex p-2 gap-4 justify-center items-center">
+       {{-- <div class="w-1/4"> --}}
+       <img
+           src="{{$member->avatar ?  asset("avatar/$member->avatar") : asset("avatar/profile.png")}}"
+           class="object-contain h-8 w-8  rounded-full border border-gray-400 md:h-10 md:w-10"
+           alt=""
+       />
+     
+   </div>
+   @endforeach
+ </div>
+</div>
 
 <div class="flex flex-col w-full h-full justify-between bg-white md:flex-row">
 
+  
   <!-- chat list -->
   <div class="hidden flex h-full flex-col w-2/5 border-r-2 overflow-y-auto md:flex">
     <!-- search compt -->
